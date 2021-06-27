@@ -39,14 +39,14 @@ for enemy in range(no_of_enemies):
     enemy_img.append(pygame.image.load('enemy.png'))
     enemyX.append(randint(0, 736))
     enemyY.append(randint(50, 200))
-    enemyX_change.append(4)
+    enemyX_change.append(10)
     enemyY_change.append(randint(20,50))
 
 # missile
 missile_img= pygame.image.load('missile.png')
 missileX=0
 missileY=470
-missileY_change = 10
+missileY_change = 30
 # ready - missile isnt visible 
 # fire - missile is currently moving
 missile_state='ready'
@@ -61,7 +61,6 @@ def fire_missile(x,y):
     global missile_state
     missile_state = 'fire'
     screen.blit(missile_img,(x+16,y+10))
-    
 
 def iscollision(x1,y1,x2,y2):
     distance = math.sqrt(math.pow(x1-x2,2) + math.pow(y1-y2,2))
@@ -74,6 +73,10 @@ score_val = 0
 font =  pygame.font.Font('freesansbold.ttf',40)
 textX = 10
 textY = 10
+
+#fps
+FPS = 45
+clock = pygame.time.Clock()
 
 #Game over text
 over_font = pygame.font.Font('freesansbold.ttf',70)
@@ -90,7 +93,7 @@ def game_over_text():
 # Game Loop
 run = True
 while run:
-
+    clock.tick(FPS) 
     # Bottom most layer - everything lies above this
     screen.fill((0,100,150))
     # Bg img
@@ -102,13 +105,13 @@ while run:
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
-                playerX_change = -4
+                playerX_change = -9
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                playerX_change = 4
+                playerX_change = 9
             if event.key == pygame.K_SPACE:
                 if missile_state=='ready':
-                    missile_sound=mixer.Sound('laser.wav')
-                    missile_sound.play()
+                    # missile_sound=mixer.Sound('laser.wav')
+                    # missile_sound.play()
                     missileX = playerX
                     fire_missile(missileX,missileY)
 
@@ -136,17 +139,17 @@ while run:
 
         enemyX[i] += enemyX_change[i]
         if enemyX[i] <= 0:
-            enemyX_change[i] = 3
+            enemyX_change[i] = 10
             enemyY[i] += enemyY_change[i] 
         elif enemyX[i] >= 736:
-            enemyX_change[i] = -3
+            enemyX_change[i] = -10
             enemyY[i] += enemyY_change[i] 
     
         # Collision
         collision = iscollision(enemyX[i],enemyY[i],missileX,missileY)
         if collision:
-            explosion_Sound=mixer.Sound('explosion.wav')
-            explosion_Sound.play()
+            # explosion_Sound=mixer.Sound('explosion.wav')
+            # explosion_Sound.play()
             missileY = 470
             missile_state = 'ready'
             score_val += 1
