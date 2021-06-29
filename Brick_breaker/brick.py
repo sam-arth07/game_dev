@@ -33,7 +33,7 @@ class Paddle(PlayComponent):
     def move(self,dist):
         coord = self.position()
         width = self.canvas.winfo_width()
-        if (coord[2] +dist) <= width and (coord[0] +dist) >= 0:
+        if (coord[2] +dist) <= width and (coord[0] +dist) >=0:
             super(Paddle, self).move(dist, 0)
             if self.ball is not None:
                 self.ball.move(dist, 0)
@@ -163,6 +163,7 @@ class Game(tk.Frame):
         self.canvas.unbind("<s>")
         self.canvas.delete(self.text)
         self.paddle.ball = None
+        self.game_loop()
     
     def verify_inter(self):
         ball_coords = self.ball.position()
